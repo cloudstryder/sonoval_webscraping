@@ -1,2 +1,2 @@
 # sonoval_webscraping
-webscraping emails from scientific publishings
+webscraping emails from online scientific publications using DOI #s
