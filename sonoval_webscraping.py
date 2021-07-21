@@ -25,7 +25,7 @@ browser = webdriver.Chrome(executable_path='/Users/Rohin/Desktop/sonoval_webscra
 # this value is used to determine where to insert the extracted emails
 iterator = 2
 # use generator instead of for loop to save processing power
-for row in sheet.iter_rows(min_row=iterator, max_row=5, min_col=7,max_col=7):
+for row in sheet.iter_rows(min_row=iterator, max_row=500, min_col=7,max_col=7):
     emails = [] # emails extracted from website
     
     """because doi.org redirects to another website, i had initially tried to use the .url 
