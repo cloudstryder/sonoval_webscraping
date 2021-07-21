@@ -51,7 +51,7 @@ for row in sheet.iter_rows(min_row=iterator, max_row=500, min_col=7,max_col=7):
         print("site rendered")
         # scrapes emails, and returns as array
         for re_match in re.finditer(EMAIL_REGEX, site.html.raw_html.decode()): # throws error if element w given ID is not there (i.e. email)
-            if not ['/', '\\', '{','}','[',']'] in re_match.group() and not re_match.group()[-1] in ['0','1','2','3','4','5','6','7','8','9']:
+            if not any(x in re_match.group() for x in ['/', '\\', '{','}','[',']']) and not re_match.group()[-1] in ['0','1','2','3','4','5','6','7','8','9']:
                 emails.append(re_match.group())
         if len(emails) == 0:
             print("Emails hidden") # if an error is not thrown but no emails are found, this usually means they are hidden by a captcha or something
