@@ -12,7 +12,7 @@ import re
 from requests_html import HTMLSession
 
 # setting up notebook + HTML loader
-workbook = load_workbook(filename='research_papers_list.xlsx') 
+workbook = load_workbook(filename='excel_files/research_papers_list.xlsx') 
 sheet = workbook.active  
 session = HTMLSession() 
 # index to search for emails. it still picks up some data tags or long strings starting with // which i should filter out the next time
@@ -25,7 +25,7 @@ browser = webdriver.Chrome(executable_path='/Users/Rohin/Desktop/sonoval_webscra
 # this value is used to determine where to insert the extracted emails
 iterator = 2
 # use generator instead of for loop to save processing power
-for row in sheet.iter_rows(min_row=iterator, max_row=500, min_col=7,max_col=7):
+for row in sheet.iter_rows(min_row=iterator, max_row=5, min_col=7,max_col=7):
     emails = [] # emails extracted from website
     
     """because doi.org redirects to another website, i had initially tried to use the .url 
@@ -37,7 +37,7 @@ for row in sheet.iter_rows(min_row=iterator, max_row=500, min_col=7,max_col=7):
     """launches website in chrome window, and after the sleep time, takes the final url after the redirect"""
     print("fetching redirect from http://doi.org/"+row[0].value)
     browser.get("http://doi.org/"+row[0].value)
-    time.sleep(3) # time waiting for browser to load all of the redirects
+    time.sleep(1.5) # time waiting for browser to load all of the redirects
     URL = browser.current_url
     print("Final URL:", URL)
     
@@ -51,7 +51,8 @@ for row in sheet.iter_rows(min_row=iterator, max_row=500, min_col=7,max_col=7):
         print("site rendered")
         # scrapes emails, and returns as array
         for re_match in re.finditer(EMAIL_REGEX, site.html.raw_html.decode()): # throws error if element w given ID is not there (i.e. email)
-            emails.append(re_match.group())
+            if not '/' in re_match.group() and not re_match.group()[-1] in ['0','1','2','3','4','5','6','7','8','9']:
+                emails.append(re_match.group())
         if len(emails) == 0:
             print("Emails hidden") # if an error is not thrown but no emails are found, this usually means they are hidden by a captcha or something
         else:    
