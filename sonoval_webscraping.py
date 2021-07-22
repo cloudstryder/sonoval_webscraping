@@ -63,6 +63,8 @@ MAX_LENGTH = 40
 # as true, especially if there will likely be an interruption in the code
 SAVE_EVERY_ITERATION = True
 
+
+
 """optional variables"""
 
 
