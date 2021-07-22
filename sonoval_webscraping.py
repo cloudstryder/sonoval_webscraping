@@ -29,7 +29,7 @@ READ_FILE = 'excel_files/research_papers_list.xlsx'
 # file path for excel file which the emails will be copied onto. if you want the 
 # data saved to a new file, make this a file path to an excel doc which doesn't exist, 
 # and all of the contents of the READ_FILE will be copied over into the new file.
-WRITE_FILE = 'excel_files/research_papers_list_updated.xlsx'
+WRITE_FILE = 'research_papers_list_updated.xlsx'
 # file path to chromeddriver module. It should be noted that it must include the 
 # module itself as the final item in the path, and it must be an absolute file 
 # path. You can experiment with a relative file path but the chromedriver was
@@ -56,6 +56,10 @@ FORBIDDEN_ENDINGS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 # The line above is what 40 characters looks like, but if you feel that people might have very
 # long emails/domains you are welcome to change this to something unobstructive (100) to be safe
 MAX_LENGTH = 40
+# set to true if you would like to have the emails be saved as the code is running or for 
+# everything to be saved at the very end after everything is run. It is safer to set this
+# as true, especially if there will likely be an interruption in the code
+SAVE_EVERY_ITERATION = True
 
 """optional variables"""
 
@@ -77,7 +81,9 @@ from requests_html import HTMLSession
 
 # setting up notebook + HTML loader
 workbook = load_workbook(filename=READ_FILE) 
-sheet = workbook.active  
+if not SAVE_EVERY_ITERATION:
+    sheet = workbook.active  
+
 session = HTMLSession() 
 # index to search for emails. it still picks up some data tags or long strings starting with // which i should filter out the next time
 EMAIL_REGEX = r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"""
@@ -86,6 +92,8 @@ EMAIL_REGEX = r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-
 browser = webdriver.Chrome(executable_path=WEBDRIVER_PATH)
 
 # use generator instead of for loop to save processing power
+if SAVE_EVERY_ITERATION:
+    sheet = workbook.active
 for row in sheet.iter_rows(min_row=READ_ROW, max_row=END_ROW, min_col=READ_COLUMN,max_col=READ_COLUMN):
     emails = [] # emails extracted from website
     
@@ -98,7 +106,7 @@ for row in sheet.iter_rows(min_row=READ_ROW, max_row=END_ROW, min_col=READ_COLUM
     """launches website in chrome window, and after the sleep time, takes the final url after the redirect"""
     print("fetching redirect from http://doi.org/"+row[0].value)
     browser.get("http://doi.org/"+row[0].value)
-    time.sleep(1.5) # time waiting for browser to load all of the redirects.
+    # time.sleep(1.5) this was not actually needed, the next line waits for the website to be fully loaded before continuing and doesnt need a timer
     URL = browser.current_url
     print("Final URL:", URL)
     
@@ -125,13 +133,16 @@ for row in sheet.iter_rows(min_row=READ_ROW, max_row=END_ROW, min_col=READ_COLUM
         sheet[WRITE_COLUMN+str(READ_ROW)] = "EXCEPTION OCCURRED"
         pass
     READ_ROW += 1
-    print('[website completed]')
+    if SAVE_EVERY_ITERATION:
+        workbook.save(filename=WRITE_FILE)
+    print('[website completed]\n')
     
 # browser must be quit after all emails are scraped, as quitting and reopening it multiple times in a 
 # file gives an error. 
 browser.quit()
 # saves changes to file, whether it be the same one or a new one
-workbook.save(filename=WRITE_FILE)
+if not SAVE_EVERY_ITERATION:
+    workbook.save(filename=WRITE_FILE)
     
 
 
