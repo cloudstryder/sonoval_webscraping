@@ -51,6 +51,8 @@ WRITE_COLUMN = 'C'
 FORBIDDEN_CHARS = ['/', '\\', '{','}','[',']']
 # emails ending with any of these strings will be ignored. The strings can be any length. 
 FORBIDDEN_ENDINGS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+# emails starting with any of these strings will be ignored, can be any length
+FORBIDDEN_STARTERS = ["ampaign", "info"]
 # if an email excedes this length, it will be discarded. 
 # abcdefghijklmnopqrstuvwxyzabcdefghijklmn
 # The line above is what 40 characters looks like, but if you feel that people might have very
@@ -120,7 +122,7 @@ for row in sheet.iter_rows(min_row=READ_ROW, max_row=END_ROW, min_col=READ_COLUM
         print("site rendered")
         # scrapes emails, and returns as array
         for re_match in re.finditer(EMAIL_REGEX, site.html.raw_html.decode()): # throws error if element w given ID is not there (i.e. email)
-            if not any(x in re_match.group() for x in FORBIDDEN_CHARS) and not any(re_match.group().endswith(x) for x in FORBIDDEN_ENDINGS) and len(re_match.group()) < MAX_LENGTH:
+            if not any(x in re_match.group() for x in FORBIDDEN_CHARS) and not any(re_match.group().endswith(x) for x in FORBIDDEN_ENDINGS) and not any(re_match.group().startswith(x) for x in FORBIDDEN_STARTERS) and len(re_match.group()) < MAX_LENGTH:
                 emails.append(re_match.group())
         if len(emails) == 0:
             print("Emails hidden/ignored") # if an error is not thrown but no emails are found, this usually means they are hidden by a captcha or something
