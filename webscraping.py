@@ -17,7 +17,7 @@ After the code completes, if you try opening whichever file the emails were
 written to it'll likely say that the file was damaged, but if you open and
 delete the recovered data it should be fine (I usually check the recovered 
 just in case theres something important there, but its usually just some 
-random text which opens in xcode and can be discarded). 
+random text which opens in xcode and can be discarded).  
 
 After downloading the code, if you want to run everything while changing as 
 little as possible, make a new directory here called "excel_files" and name
