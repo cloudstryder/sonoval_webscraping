@@ -51,12 +51,12 @@ READ_COLUMN = 7
 # column in which emails are written to in final file. Must be a letter, usually column C
 WRITE_COLUMN = 'C'
 # If any of these characters are found in one of the strings presumed to be an email, it
-# will be discarded. 
+# will be discarded. These can also be full strings and not just chars. 
 FORBIDDEN_CHARS = ['/', '\\', '{','}','[',']']
 # emails ending with any of these strings will be ignored. The strings can be any length. 
 FORBIDDEN_ENDINGS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 # emails starting with any of these strings will be ignored, can be any length
-FORBIDDEN_STARTERS = ["ampaign", "info"]
+FORBIDDEN_STARTERS = ["ampaign", "info", "journal"]
 # if an email excedes this length, it will be discarded. 
 # abcdefghijklmnopqrstuvwxyzabcdefghijklmn
 # The line above is what 40 characters looks like, but if you feel that people might have very
@@ -106,7 +106,7 @@ for row in sheet.iter_rows(min_row=READ_ROW, max_row=END_ROW, min_col=READ_COLUM
     emails = [] # emails extracted from website
     
     print("line", READ_ROW, "out of", END_ROW)
-    
+
     """because doi.org redirects to another website, i had initially tried to use the .url 
     property of request.get objects, but they had a countermeasure against this so I had to 
     use a webdriver"""
