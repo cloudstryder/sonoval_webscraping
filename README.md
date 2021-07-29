@@ -1,2 +1,2 @@
-# sonoval_webscraping
-webscraping emails from online scientific publications using DOI #s
+# https://www.webofknowledge.com/
+webscraping emails excel lists outputted by web of science database
