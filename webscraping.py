@@ -1,5 +1,9 @@
 """
 Notes:
+Although many of these comments might be a bit redundant and over-explanatory
+for someone with a lot of coding experience, I would still recommend reading 
+all of them throroughly before starting to be safe. 
+
 The easiest way to run this is to just use "python3 thisfilename" in terminal. 
 If any modules are missing when you first run the code, just type "pip install 
 modulename". And before that, be sure to change any of the variables below as 
