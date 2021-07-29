@@ -105,6 +105,8 @@ if SAVE_EVERY_ITERATION:
 for row in sheet.iter_rows(min_row=READ_ROW, max_row=END_ROW, min_col=READ_COLUMN,max_col=READ_COLUMN):
     emails = [] # emails extracted from website
     
+    print("line", READ_ROW, "out of", END_ROW)
+    
     """because doi.org redirects to another website, i had initially tried to use the .url 
     property of request.get objects, but they had a countermeasure against this so I had to 
     use a webdriver"""
