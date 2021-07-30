@@ -23,6 +23,12 @@ After downloading the code, if you want to run everything while changing as
 little as possible, make a new directory here called "excel_files" and name
 the excel file "research_papers_list.xlsx". The new file will then be saved
 as "research_papers_list_updated.xlsx".
+
+If the code gets interrupted, do not start again and save the data to the 
+same file. This will override all of the previous data which was entered 
+before the interruption with whatever is on the initial file (so usually
+empty cells). The solution would be to change the read file to the file 
+made by the previously interrupted code and the write file to a new one.
 """
 
 
