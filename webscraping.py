@@ -29,6 +29,7 @@ same file. This will override all of the previous data which was entered
 before the interruption with whatever is on the initial file (so usually
 empty cells). The solution would be to change the read file to the file 
 made by the previously interrupted code and the write file to a new one.
+tl;dr it might be easiest to read and write to the same file
 """
 
 
