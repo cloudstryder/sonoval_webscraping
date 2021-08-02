@@ -45,7 +45,7 @@ WRITE_FILE = 'research_papers_list_updated.xlsx'
 # module itself as the final item in the path, and it must be an absolute file 
 # path. You can experiment with a relative file path but the chromedriver was
 # always very finnicky for me so its probably safest to just do this. 
-WEBDRIVER_PATH = '/Users/Rohin/Desktop/sonoval_webscraping/chromedriver/chromedriver'
+WEBDRIVER_PATH = '/Users/Rohin/Desktop/webofscience_email_webscraping/chromedriver/chromedriver'
 # Which row the algorithm should start reading at (usually row 2 since the first row is headers).
 # This variable is also used to determine which row the emails should start being written at.
 READ_ROW = 2
